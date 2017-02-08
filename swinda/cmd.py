@@ -25,7 +25,7 @@ def validate_jwt():
     if isValid:
         print("> OK!")
     else:
-        print("> !!!!!!!!!!!!! KO !!!!!!!!!!!!!!!! AR_FR_Exception detected!")
+        print("> !!!!!!!!!!!!! KO !!!!!!!!!!!!!!!!")
 
 
 if __name__ == '__main__':
