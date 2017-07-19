@@ -145,7 +145,6 @@ class ISSValidatorStrategy:
             with open(filename) as f:
                 for line in f.readlines():
                     available_issuers.append(line.replace("\n",""))
-            # import ipdb;ipdb.set_trace()
             return self.iss in available_issuers
 
         except Exception:

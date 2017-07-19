@@ -45,7 +45,7 @@ def show_progress(step):
 
     if step == "validate_JWT_success" or step == "validate_JWT_error":
         term_width = (term.width / 2) - (len(available_step.get(step)) / 2) - 1
-        with term.location(floor(term_width), term.height - 1):
+        with term.location(int(floor(term_width)), int(term.height - 1)):
             print(available_step.get(step))
     else:
         print_title(available_step.get(step))
