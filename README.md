@@ -9,7 +9,7 @@ Installation
 
 - Require python 3.4+
 ```
-> cd <swinda pproject directory>
+> cd <swinda project directory>
 > python setup.py install
 ```
 
