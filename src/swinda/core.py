@@ -2,7 +2,6 @@ from jose import jwk, jwt
 from jose.utils import base64url_decode
 
 import requests
-import json
 
 
 def request_jwk(uri):
@@ -28,6 +27,6 @@ def format_jwt(jwtoken):
     claims = jwt.get_unverified_claims(jwtoken)
 
     return " headers: \n{}\n\n> claims: \n{}".format(
-        "\n\t".join( {"{} > {}".format(k, v) for k, v in headers.items() } ),
-        "\n\t".join( {"{} > {}".format(k, v) for k, v in claims.items() } )
+        "\n\t".join({"{} > {}".format(k, v) for k, v in headers.items()}),
+        "\n\t".join({"{} > {}".format(k, v) for k, v in claims.items()})
     )
