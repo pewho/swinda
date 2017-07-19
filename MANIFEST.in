@@ -4,3 +4,4 @@ include .coveragerc
 include LICENCE
 include tox.ini
 recursive-include tests *.py
+recursive-include src *.conf

@@ -1,6 +1,8 @@
 from swinda.format import show_issue
 from jose import jwk, jwt
 from jose.utils import base64url_decode
+import time
+import pkg_resources
 
 
 class Validator:
@@ -16,6 +18,32 @@ Do you use the right JWK ?")
             SignatureValidatorStrategy(jwk_raw, jwt)
         )
         validator.append_child(sigValidator)
+
+        #Expiration Validator
+        expValidator = ChildValidator("Expiration Validator",
+            "JwT is no longer valid")
+        expValidator.associate_validation_strategy(
+            ExpirationValidatorStrategy(jwt)
+        )
+        validator.append_child(expValidator)
+
+        #IAT Validator
+        nbfValidator = ChildValidator("Not Before Validator",
+            "JwT is valid in the futur, are you sure your internal clock \
+is correctly configured ?")
+        nbfValidator.associate_validation_strategy(
+            NBFValidatorStrategy(jwt)
+        )
+        validator.append_child(nbfValidator)
+
+        #ISS Validator
+        issValidator = ChildValidator("Issuer Validator",
+            "Token must be issued by a trusted KAUTH Server. \
+ This is a token issued by not trusted/unknown environment.")
+        issValidator.associate_validation_strategy(
+            ISSValidatorStrategy(jwt)
+        )
+        validator.append_child(issValidator)
 
         return validator
 
@@ -81,4 +109,44 @@ class SignatureValidatorStrategy:
 
             return key.verify(message.encode("utf-8"), decoded_sig)
         except Exception as e:
+            return False
+
+
+class ExpirationValidatorStrategy:
+    def __init__(self, jwt_raw):
+        self.exp = jwt.get_unverified_claims(jwt_raw)['exp']
+
+    def validate(self):
+        try:
+            return self.exp > time.time()
+        except Exception:
+            return False
+
+
+class NBFValidatorStrategy:
+    def __init__(self, jwt_raw):
+        self.nbf = jwt.get_unverified_claims(jwt_raw)['nbf']
+
+    def validate(self):
+        try:
+            return self.nbf < time.time()
+        except Exception:
+            return False
+
+
+class ISSValidatorStrategy:
+    def __init__(self, jwt_raw):
+        self.iss = jwt.get_unverified_claims(jwt_raw)['iss']
+
+    def validate(self):
+        try:
+            filename = pkg_resources.resource_filename("swinda", "issuers.conf")
+            available_issuers = []
+            with open(filename) as f:
+                for line in f.readlines():
+                    available_issuers.append(line.replace("\n",""))
+            # import ipdb;ipdb.set_trace()
+            return self.iss in available_issuers
+
+        except Exception:
             return False
