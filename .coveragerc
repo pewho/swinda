@@ -1,0 +1,13 @@
+[run]
+branch = True
+source =
+    swinda
+
+[paths]
+source =
+   src/swinda
+   .tox/*/lib/python*/site-packages/swinda
+   .tox/pypy/site-packages/swinda
+
+[report]
+show_missing = True

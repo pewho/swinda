@@ -1,1 +1,6 @@
 include *.md
+include *.txt
+include .coveragerc
+include LICENCE
+include tox.ini
+recursive-include tests *.py

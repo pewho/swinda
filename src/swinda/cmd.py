@@ -3,7 +3,7 @@
 import argparse
 from swinda.core import validate, request_jwk, format_jwt
 import json
-import ipdb
+
 
 def validate_jwt():
     parser = argparse.ArgumentParser(description="JWT RSA Key validator...")
@@ -26,6 +26,10 @@ def validate_jwt():
         print("> OK!")
     else:
         print("> !!!!!!!!!!!!! KO !!!!!!!!!!!!!!!!")
+
+
+def hello():
+    print("Hello, world")
 
 
 if __name__ == '__main__':

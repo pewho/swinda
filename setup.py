@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
 from setuptools import setup, find_packages
-import swinda
 
 setup(
     name='swinda',
-    version=swinda.__version__,
-    packages=find_packages(),
-    author=swinda.__author__,
+    version="0.0.2",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    author="Mathias Bazire",
     author_email="mathias.bazire@sylpheo.com",
-    description="JWT Validator tool",
+    description="JWT with RS256 JWA Validator tool",
     long_description=open('README.md').read(),
     install_requires=["python-jose","requests"] ,
     include_package_data=True,
     url='http://github.com/pewho/swinda',
+    zip_safe=False,
     classifiers=[
         "Programming Language :: Python",
         "Development Status :: 1 - Planning",
