@@ -59,11 +59,17 @@ def show_jwk(jwk):
     print(term.move_down)
 
 
-def show_validation_information(isValid, issues=None):
-    if isValid:
+def show_validation_information(validator):
+    if validator.isValid:
         show_progress("validate_JWT_success")
     else:
+        print_title("{t.red_bold}> JWT Issues{t.normal}".format(t=term))
+        validator.show_issues()
         show_progress("validate_JWT_error")
+
+
+def show_issue(issue):
+    print_element("{t.red} - {iss}{t.normal}".format(t=term, iss=issue))
 
 
 def print_title(title):

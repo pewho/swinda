@@ -2,6 +2,7 @@
 import argparse
 from swinda.core import validate, request_jwk, format_jwt
 from swinda.format import show_progress, show_jwk, show_validation_information
+from jose.exceptions import JWTError
 
 from blessings import Terminal
 
@@ -31,11 +32,13 @@ def validate_jwt():
 
     show_progress("validating_JWT")
 
-    isValid, issues = validate(args.jwt_token, jwk_raw)
+    validator = validate(args.jwt_token, jwk_raw)
+    try:
+        format_jwt(args.jwt_token)
+    except JWTError:
+        pass
 
-    format_jwt(args.jwt_token)
-
-    show_validation_information(isValid, issues)
+    show_validation_information(validator)
 
     input()
 

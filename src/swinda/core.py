@@ -1,5 +1,5 @@
-from jose import jwk, jwt
-from jose.utils import base64url_decode
+from jose import  jwt
+from swinda.validators import Validator
 
 import requests
 
@@ -16,12 +16,10 @@ def request_jwk(uri):
 
 
 def validate(token, jwk_raw):
-    key = jwk.construct(jwk_raw)
+    validator = Validator.build(jwk_raw, token)
+    validator.validate()
 
-    message, encoded_sig = token.rsplit(".", 1)
-    decoded_sig = base64url_decode(encoded_sig.encode("utf-8"))
-
-    return key.verify(message.encode("utf-8"), decoded_sig), {}
+    return validator
 
 
 def format_jwt(jwtoken):
