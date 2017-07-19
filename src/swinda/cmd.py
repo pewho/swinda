@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-
 import argparse
 from swinda.core import validate, request_jwk, format_jwt
-import json
+from swinda.format import show_progress, show_jwk, show_validation_information
+
+from blessings import Terminal
 
 
 def validate_jwt():
@@ -12,20 +13,33 @@ def validate_jwt():
 
     args = parser.parse_args()
 
-    print('Request remote JWK... \n')
-    jwk_raw = request_jwk(args.jwk_uri)
-    print('> JWK infos > ' + json.dumps(jwk_raw) + '\n')
+    term = Terminal()
+    print(term.enter_fullscreen)
+    print(term.clear)
 
-    isValid = validate(args.jwt_token, jwk_raw)
+    show_progress("get_jwk")
 
-    print('Validate JWT...\n')
-    print('>' + format_jwt(args.jwt_token))
-    print("\n")
+    jwk_raw = None
 
-    if isValid:
-        print("> OK!")
-    else:
-        print("> !!!!!!!!!!!!! KO !!!!!!!!!!!!!!!!")
+    try:
+        jwk_raw = request_jwk(args.jwk_uri)
+        show_progress("got_jwk")
+        show_jwk(jwk_raw)
+    except Exception:
+        show_progress("jwk_error")
+        return
+
+    show_progress("validating_JWT")
+
+    isValid, issues = validate(args.jwt_token, jwk_raw)
+
+    format_jwt(args.jwt_token)
+
+    show_validation_information(isValid, issues)
+
+    input()
+
+    print(term.exit_fullscreen)
 
 
 def hello():

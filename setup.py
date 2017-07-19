@@ -11,7 +11,7 @@ setup(
     author_email="mathias.bazire@sylpheo.com",
     description="JWT with RS256 JWA Validator tool",
     long_description=open('README.md').read(),
-    install_requires=["python-jose", "requests"],
+    install_requires=["python-jose", "requests", "blessings"],
     include_package_data=True,
     url='http://github.com/pewho/swinda',
     zip_safe=False,
